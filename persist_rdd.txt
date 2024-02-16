@@ -1,0 +1,27 @@
+Q1 Cache vs Persist
+
+Cache:
+	Memory Storage: When you tell Spark to cache data, it keeps that data in its memory. It's like putting something important on your desk so you can grab it quickly whenever you need it.
+
+	Faster Access: Since the data is already stored in memory, accessing it is super fast. It's like keeping your favorite book right next to you on the table instead of having to go to the bookshelf every time you want to read it.
+
+Persist:
+	Flexible Storage: When you persist data in Spark, you can choose where to store it: in memory, on disk, or both. It's like deciding whether to keep your stuff on your desk or in a drawer, depending on how often you'll need it and how much space you have.
+
+	Reusability: Persisting data means Spark remembers it for later. So, if you need to use the same data multiple times in your Spark program, persisting it can save time and resources because Spark doesn't have to redo the calculations.
+
+Caching is a specific type of persisting that focuses on storing data in memory for quick access, while persisting is a more general concept of saving data for reuse, with the added flexibility of choosing where to store it.
+
+
+-------------------------------
+Q2 Why only upto 200 rdd partitions
+
+The default maximum number of partitions for RDDs (Resilient Distributed Datasets) in Spark is 200. This default value is set for several reasons:
+
+Performance: Having too many partitions can lead to overhead in managing them, such as task scheduling and data shuffling during operations like joins or aggregations. Limiting the number of partitions helps in reducing this overhead, improving overall performance.
+
+Memory Management: Each partition in Spark is processed by a task running on an executor. Having too many partitions can lead to excessive memory usage because each partition requires some memory overhead. Limiting the number of partitions helps in controlling memory usage.
+
+Task Granularity: Spark operates by dividing the data into partitions and processing each partition independently. If there are too many partitions, each task may end up processing a very small amount of data, leading to inefficient resource utilization. Limiting the number of partitions helps in achieving an optimal task granularity.
+
+However, this default value can be adjusted based on specific requirements. Depending on the size of the dataset, available resources, and the nature of the computation, you may need to increase or decrease the number of partitions to achieve better performance. This can be done by explicitly specifying the number of partitions when creating RDDs or by using operations like repartition() and coalesce() to adjust the partitioning scheme.
